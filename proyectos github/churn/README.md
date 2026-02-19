@@ -1,43 +1,41 @@
-# Customer Churn Prediction for a Telecom Company
+# Customer Churn Prediction
 
 ## 1. Introduction: The Business Problem
 
-Customer churn, the rate at which customers stop doing business with a company, is a critical metric for subscription-based services like telecom providers. It is far more expensive to acquire a new customer than to retain an existing one.
-
-This project aims to build a machine learning model that accurately predicts which customers are most likely to churn. By identifying these at-risk customers, the business can proactively engage them with targeted retention strategies, such as special offers or improved customer service, ultimately reducing revenue loss.
+El objetivo de este proyecto es predecir la tasa de abandono de clientes (Churn) en una empresa de telecomunicaciones. Identificar a los clientes en riesgo permite implementar estrategias de retención proactivas, reduciendo la pérdida de ingresos y mejorando la fidelidad.
 
 ## 2. Dataset
 
-The dataset contains customer information from a fictional telecom company. It includes:
-*   **Customer Demographics:** Gender, senior citizen status, partner, and dependent status.
-*   **Services Subscribed:** Phone service, multiple lines, internet service, online security, online backup, etc.
-*   **Account Information:** Tenure (how long they've been a customer), contract type, payment method, paperless billing, monthly charges, and total charges.
-*   **Target Variable:** `Churn` (Yes/No), indicating whether the customer left within the last month.
+El dataset contiene información de clientes de una compañía de telecomunicaciones.
+
+*   **Customer Demographics:** `gender`, `SeniorCitizen`, `Partner`, `Dependents`.
+*   **Services Subscribed:** `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV`, `StreamingMovies`.
+*   **Account Information:** `tenure`, `Contract`, `PaperlessBilling`, `PaymentMethod`, `MonthlyCharges`, `TotalCharges`.
+*   **Target Variable:** `Churn` (Yes/No).
 
 ## 3. Project Workflow
 
-The project followed a standard data science workflow:
+El proyecto siguió un flujo de trabajo estándar de ciencia de datos:
 
 1.  **Data Preprocessing:**
-    *   Handled data inconsistencies (e.g., converting `TotalCharges` to a numeric type).
-    *   Built a robust `scikit-learn` pipeline to systematically impute missing values (using the median for numerical columns) and scale features.
-    *   Applied One-Hot Encoding to categorical variables to prepare them for modeling.
+    *   Manejo de valores nulos e inconsistencias (ej. conversión de `TotalCharges` a numérico).
+    *   Imputación de valores faltantes usando la mediana (`SimpleImputer`) y escalado de variables numéricas (`StandardScaler`).
+    *   Codificación de variables categóricas utilizando `OneHotEncoder`.
 
 2.  **Model Training & Tuning:**
-    *   Three different classification models were trained and compared:
-        *   **Logistic Regression** (as a baseline)
+    *   Modelos entrenados:
+        *   **Logistic Regression** (Baseline)
         *   **Random Forest Classifier**
         *   **XGBoost Classifier**
-    *   `GridSearchCV` was used to perform extensive hyperparameter tuning for each model, ensuring optimal performance was achieved. The models were tuned based on the **ROC AUC** metric.
+    *   Se utilizó `GridSearchCV` con validación cruzada estratificada (`StratifiedKFold`) para la optimización de hiperparámetros.
 
 3.  **Evaluation & Threshold Optimization:**
-    *   While accuracy is important, the primary business goal is to correctly identify as many potential churners as possible (maximizing **Recall** for the "Yes" class) without overwhelming the retention team with false positives (maintaining reasonable **Precision**).
-    *   Therefore, the **F1-Score** was chosen as the key evaluation metric. The default prediction threshold of 0.5 was found to be suboptimal, resulting in many missed churners (high false negatives).
-    *   For each model, an optimal prediction threshold was calculated by maximizing the F1-score on a cross-validated portion of the training data. This custom threshold provides a better balance between Precision and Recall for this specific business problem.
+    *   Se priorizó el **F1-Score** y el **Recall** para la clase positiva (Churn) para minimizar los falsos negativos (clientes que se van y no detectamos).
+    *   Se optimizó el umbral de decisión (threshold) maximizando el F1-Score en el set de validación, en lugar de usar el defecto 0.5.
 
 ## 4. Model Performance Comparison
 
-The final models were evaluated on the held-out test set. The performance metrics below are reported using the **F1-optimized threshold**.
+Resumen del rendimiento de los modelos en el set de prueba utilizando el umbral optimizado.
 
 | Model | ROC AUC | PR AUC | F1-Score (Churn=Yes) | Precision (Churn=Yes) | Recall (Churn=Yes) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -45,29 +43,12 @@ The final models were evaluated on the held-out test set. The performance metric
 | **Random Forest** | **0.834** | **0.620** | **0.615** | **0.498** | **0.804** |
 | XGBoost | 0.832 | 0.620 | 0.618 | 0.530 | 0.742 |
 
-**Conclusion:** All three models perform similarly well, with the **Random Forest** model achieving the highest Recall (80.4%), meaning it successfully identified the largest percentage of actual churners. This makes it a strong candidate for deployment, as the primary goal is to catch at-risk customers.
+**Conclusion:** El modelo **Random Forest** obtuvo el mejor rendimiento general, destacando especialmente en **Recall (80.4%)**, lo que significa que es capaz de identificar a la gran mayoría de los clientes en riesgo de abandono.
 
 ## 5. Key Drivers of Churn
 
-The models consistently highlighted the following factors as the most significant predictors of customer churn:
+Los modelos (especialmente Regresión Logística y Random Forest) destacaron los siguientes factores como predictores significativos:
 
-*   **Contract Type:** Customers with **Month-to-Month contracts** are far more likely to churn than those with One-Year or Two-Year contracts. This is the single most important predictor.
-*   **Tenure:** New customers (with low **tenure**) are at a much higher risk of churning.
-*   **Internet Service:** Customers with **Fiber Optic** internet service have a higher churn rate, which may indicate issues with pricing, reliability, or perceived value for that specific service.
-
-These insights suggest that retention efforts should focus on encouraging new customers to move to longer-term contracts and investigating the customer experience for fiber optic users.
-
-## 6. How to Run This Project
-
-1.  Clone this repository:
-    ```bash
-    git clone <repository-url>
-    ```
-2.  Create a `requirements.txt` file and install the necessary dependencies:
-    *(You should create this file by running `pip freeze > requirements.txt`)*
-    ```bash
-    pip install -r requirements.txt
-    ```
-    Key libraries used are: `pandas`, `numpy`, `matplotlib`, `scikit-learn`, and `xgboost`.
-
-3.  Open and run the `churn.ipynb` Jupyter Notebook to see the full analysis.
+*   **Internet Service (Fiber Optic):** Los clientes con fibra óptica tienen una mayor probabilidad de abandono, lo que podría indicar problemas con el servicio o precios competitivos.
+*   **Contract Type:** Los contratos a largo plazo (Two year) reducen significativamente el riesgo de churn.
+*   **Tenure:** A mayor antigüedad del cliente, menor es la probabilidad de que abandone la compañía.
