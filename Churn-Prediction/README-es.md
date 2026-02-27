@@ -61,7 +61,7 @@ Con base en estos resultados, se recomienda implementar estrategias de fidelizac
 ## 6. Installation & Usage
 
 ### Requirements
-Este proyecto utiliza **Python 3.x** y las siguientes librerías principales:
+Este proyecto utiliza **Python 3.13.5** y las siguientes librerías principales:
 *   `pandas`, `numpy` (Procesamiento de datos)
 *   `matplotlib` (Visualización)
 *   `scikit-learn`, `xgboost` (Modelado)
