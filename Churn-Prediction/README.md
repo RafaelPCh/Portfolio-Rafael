@@ -60,7 +60,7 @@ Based on these results, we recommend implementing loyalty strategies for at-risk
 ## 6. Installation & Usage
 
 ### Requirements
-This project uses **Python 3.x** and the following main libraries:
+This project uses **Python 3.13.5** and the following main libraries:
 *   `pandas`, `numpy` (Data processing)
 *   `matplotlib` (Visualization)
 *   `scikit-learn`, `xgboost` (Modeling)
