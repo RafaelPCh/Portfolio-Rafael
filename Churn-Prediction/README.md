@@ -1,12 +1,14 @@
 # Customer Churn Prediction
 
+🇪🇸 [Leer en español](./README-es.md)
+
 ## 1. Introduction: The Business Problem
 
-El objetivo de este proyecto es predecir la tasa de abandono de clientes (Churn) en una empresa de telecomunicaciones. Identificar a los clientes en riesgo permite implementar estrategias de retención proactivas, reduciendo la pérdida de ingresos y mejorando la fidelidad.
+The objective of this project is to predict customer churn in a telecommunications company. Identifying at-risk customers allows for the implementation of proactive retention strategies, reducing revenue loss and improving customer loyalty.
 
 ## 2. Dataset
 
-El dataset contiene información de clientes de una compañía de telecomunicaciones.
+The dataset contains customer information from a telecommunications company.
 
 *   **Customer Demographics:** `gender`, `SeniorCitizen`, `Partner`, `Dependents`.
 *   **Services Subscribed:** `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV`, `StreamingMovies`.
@@ -15,27 +17,27 @@ El dataset contiene información de clientes de una compañía de telecomunicaci
 
 ## 3. Project Workflow
 
-El proyecto siguió un flujo de trabajo estándar de ciencia de datos:
+The project followed a standard data science workflow:
 
 1.  **Data Preprocessing:**
-    *   Manejo de valores nulos e inconsistencias (ej. conversión de `TotalCharges` a numérico).
-    *   Imputación de valores faltantes usando la mediana (`SimpleImputer`) y escalado de variables numéricas (`StandardScaler`).
-    *   Codificación de variables categóricas utilizando `OneHotEncoder`.
+    *   Handling null values and inconsistencies (e.g., converting `TotalCharges` to numeric).
+    *   Missing value imputation using the median (`SimpleImputer`) and scaling of numerical variables (`StandardScaler`).
+    *   Categorical variable encoding using `OneHotEncoder`.
 
 2.  **Model Training & Tuning:**
-    *   Modelos entrenados:
+    *   Trained models:
         *   **Logistic Regression** (Baseline)
         *   **Random Forest Classifier**
         *   **XGBoost Classifier**
-    *   Se utilizó `GridSearchCV` con validación cruzada estratificada (`StratifiedKFold`) para la optimización de hiperparámetros.
+    *   Hyperparameter optimization was performed using `GridSearchCV` with stratified cross-validation (`StratifiedKFold`).
 
 3.  **Evaluation & Threshold Optimization:**
-    *   Se priorizó el **F1-Score** y el **Recall** para la clase positiva (Churn) para minimizar los falsos negativos (clientes que se van y no detectamos).
-    *   Se optimizó el umbral de decisión (threshold) maximizando el F1-Score en el set de validación, en lugar de usar el defecto 0.5.
+    *   We prioritized **F1-Score** and **Recall** for the positive class (Churn) to minimize false negatives (customers who leave without detection).
+    *   The decision threshold was optimized by maximizing the F1-Score on the validation set, rather than using the default 0.5.
 
 ## 4. Model Performance Comparison
 
-Resumen del rendimiento de los modelos en el set de prueba utilizando el umbral optimizado.
+Summary of the models' performance on the test set using the optimized threshold.
 
 | Model | ROC AUC | PR AUC | F1-Score (Churn=Yes) | Precision (Churn=Yes) | Recall (Churn=Yes) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -43,40 +45,41 @@ Resumen del rendimiento de los modelos en el set de prueba utilizando el umbral 
 | **Random Forest** | **0.834** | **0.620** | **0.615** | **0.498** | **0.804** |
 | XGBoost | 0.832 | 0.620 | 0.618 | 0.530 | 0.742 |
 
-**Conclusion:** El modelo **Random Forest** obtuvo el mejor rendimiento general, destacando especialmente en **Recall (80.4%)**, lo que significa que es capaz de identificar a la gran mayoría de los clientes en riesgo de abandono. Si bien esto conlleva un aumento en la cantidad de falsos positivos, para el objetivo de este proyecto el beneficio es mayor.
+**Conclusion:** The **Random Forest** model achieved the best overall performance, especially excelling in **Recall (80.4%)**, meaning it is capable of identifying the vast majority of at-risk customers. While this implies a slight increase in false positives, the benefit is significantly higher for the objective of this project.
 
 ## 5. Key Drivers of Churn
 
-Los modelos (especialmente Regresión Logística y Random Forest) destacaron los siguientes factores como predictores significativos:
+The models (especially Logistic Regression and Random Forest) highlighted the following factors as significant predictors:
 
-*   **Internet Service (Fiber Optic):** Los clientes con fibra óptica tienen una mayor probabilidad de abandono, lo que podría indicar problemas con el servicio o precios competitivos.
-*   **Contract Type:** Los contratos a largo plazo (Two year) reducen significativamente el riesgo de churn.
-*   **Tenure:** A mayor antigüedad del cliente, menor es la probabilidad de que abandone la compañía.
+*   **Internet Service (Fiber Optic):** Customers with fiber optic have a higher churn probability, which could indicate issues with the service or competitive pricing.
+*   **Contract Type:** Long-term contracts (Two year) significantly reduce the risk of churn.
+*   **Tenure:** The longer a customer has been with the company, the less likely they are to churn.
 
-
-Con base en estos resultados, se recomienda implementar estrategias de fidelización para los clientes en riesgo de abandono, junto con mejoras en el servicio de internet.
+Based on these results, we recommend implementing loyalty strategies for at-risk customers, along with improvements to the internet service.
 
 ## 6. Installation & Usage
 
 ### Requirements
-Este proyecto utiliza **Python 3.x** y las siguientes librerías principales:
-*   `pandas`, `numpy` (Procesamiento de datos)
-*   `matplotlib` (Visualización)
-*   `scikit-learn`, `xgboost` (Modelado)
+This project uses **Python 3.x** and the following main libraries:
+*   `pandas`, `numpy` (Data processing)
+*   `matplotlib` (Visualization)
+*   `scikit-learn`, `xgboost` (Modeling)
 
 ### How to Run
-Ejecutar el Jupyter Notebook `churn.ipynb` para reproducir el entrenamiento, la evaluación y la selección del modelo.
+Execute the Jupyter Notebook `churn.ipynb` to reproduce the training, evaluation, and model selection.
 
 ## 7. Next Steps
-*   **Feature Engineering:** Explorar interacciones entre variables (ej. `tenure` * `MonthlyCharges`).
-*   **Deep Learning:** Experimentar con Redes Neuronales simples para comparar rendimiento.
+*   **Feature Engineering:** Explore interactions between variables (e.g., `tenure` * `MonthlyCharges`).
+*   **Deep Learning:** Experiment with simple Neural Networks to compare performance.
 
 ## 8. Project Structure
 ```text
-├── churn.ipynb       # Jupyter Notebook principal (Análisis y Modelado)
-├── churn_train.csv   # Dataset de entrenamiento
-├── churn_test.csv    # Dataset de prueba
-└── README.md         # Documentación del proyecto
+├── churn.ipynb       # Main Jupyter Notebook (Analysis and Modeling)
+├── churn_model.joblib # Trained Random Forest model
+├── churn_train.csv   # Training dataset
+├── churn_test.csv    # Test dataset
+├── README.md         # Project documentation (English)
+└── README-es.md      # Project documentation (Spanish)
 ```
 
 
