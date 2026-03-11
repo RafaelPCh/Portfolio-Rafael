@@ -16,6 +16,6 @@ Thumbs.db
 !TP_F_v6 copy.ipynb
 
 # Data folder (uncomment if you want to ignore data, but user requested to DO NOT ignore it)
-# data/
-# dataset/
-# *.csv
+data/
+dataset/
+*.dbf
