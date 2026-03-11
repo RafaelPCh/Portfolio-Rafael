@@ -1,0 +1,21 @@
+# Project-specific files to IGNORE
+*.py
+*.pkl
+.ipynb_checkpoints/
+__pycache__/
+
+# Environments and OS files
+.env
+.venv
+env/
+venv/
+.DS_Store
+Thumbs.db
+
+# Only allow specific notebook and python scripts
+!TP_F_v6 copy.ipynb
+
+# Data folder (uncomment if you want to ignore data, but user requested to DO NOT ignore it)
+# data/
+# dataset/
+# *.csv
