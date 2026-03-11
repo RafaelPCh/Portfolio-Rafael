@@ -35,7 +35,7 @@ El modelo predictivo ganador (**Random Forest Optimizado**) alcanzó un ROC-AUC 
 
 **Logro del Modelo:** A través de la optimización de hiperparámetros (Tuning), logramos **reducir significativamente los Falsos Positivos** (disminución del error en la detección de la clase negativa). Esto significa que el modelo es altamente conservador y seguro, disminuyendo la probabilidad geométrica de abandonar a individuos que genuinamente necesitan apoyo psicológico.
 
-## 🧠 Interpretabilidad (Explainable AI) y Conclusiones Centrales
+## 🧠 Interpretabilidad y Conclusiones Centrales
 
 Para dotar al modelo de explicabilidad, implementamos técnicas de interpretabilidad post-entrenamiento (XAI):
 
